@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
 
+//* Entities
+import 'package:messaging/domain/entities/message.dart';
+
 class MyBubbleMessage extends StatelessWidget {
+  //#region ----------------------------------- Variables ---------------------------------
+
+  final Message message;
+
+  //#endregion
+
   //#region --------------------------------- Hooks ---------------------------------
 
-  const MyBubbleMessage({super.key});
+  const MyBubbleMessage({super.key, required this.message});
 
   //#endregion
 
@@ -11,8 +20,14 @@ class MyBubbleMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //#region ----------------------------------- Variables ---------------------------------
+
     final colors = Theme.of(context).colorScheme;
     final size = MediaQuery.of(context).size;
+
+    //#endregion
+
+    //#region --------------------------------- Return ---------------------------------
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
@@ -23,17 +38,19 @@ class MyBubbleMessage extends StatelessWidget {
             color: colors.primary,
             borderRadius: BorderRadius.circular(20),
           ),
-          child: const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Text(
-              'Eiusmod irure aliquip culpa nulla.',
-              style: TextStyle(color: Colors.white),
+              message.text,
+              style: const TextStyle(color: Colors.white),
             ),
           ),
         ),
         const SizedBox(height: 10),
       ],
     );
+
+    //#endregion
   }
 
   //#endregion

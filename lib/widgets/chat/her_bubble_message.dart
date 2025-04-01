@@ -1,18 +1,38 @@
 import 'package:flutter/material.dart';
 
+//* Entities
+import 'package:messaging/domain/entities/message.dart';
+
 class HerBubbleMessage extends StatelessWidget {
+  //#region ----------------------------------- Variables ---------------------------------
+
+  final Message message;
+
+  //#endregion
+
   //#region --------------------------------- Hooks ---------------------------------
 
-  const HerBubbleMessage({super.key});
+  const HerBubbleMessage({super.key, required this.message});
 
   //#endregion
 
   //#region --------------------------------- Methods ---------------------------------
 
+  String capitalize(String text) {
+    if (text.isEmpty) return text;
+    return text[0].toUpperCase() + text.substring(1);
+  }
+
   @override
   Widget build(BuildContext context) {
+    //#region ----------------------------------- Variables ---------------------------------
+
     final colors = Theme.of(context).colorScheme;
     final size = MediaQuery.of(context).size;
+
+    //#endregion
+
+    //#region --------------------------------- Return ---------------------------------
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -23,28 +43,36 @@ class HerBubbleMessage extends StatelessWidget {
             color: colors.secondary,
             borderRadius: BorderRadius.circular(20),
           ),
-          child: const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Text(
-              'Voluptate cillum aliqua excepteur laborum. Ad ullamco magna consequat magna ut exercitation qui laborum.',
-              style: TextStyle(color: Colors.white),
+              capitalize(message.text),
+              style: const TextStyle(color: Colors.white),
             ),
           ),
         ),
         const SizedBox(height: 5),
-        const _ImageMessage(),
+        _ImageMessage(image: message.image!),
         const SizedBox(height: 10),
       ],
     );
+
+    //#endregion
   }
 
   //#endregion
 }
 
 class _ImageMessage extends StatelessWidget {
+  //#region ----------------------------------- Variables ---------------------------------
+
+  final String image;
+
+  //#endregion
+
   //#region --------------------------------- Hooks ---------------------------------
 
-  const _ImageMessage();
+  const _ImageMessage({required this.image});
 
   //#endregion
 
@@ -52,12 +80,18 @@ class _ImageMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //#region ----------------------------------- Variables ---------------------------------
+
     final size = MediaQuery.of(context).size;
+
+    //#endregion
+
+    //#region --------------------------------- Return ---------------------------------
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
       child: Image.network(
-        'https://yesno.wtf/assets/yes/5-64c2804cc48057b94fd0b3eaf323d92c.gif',
+        image,
         width: size.width * 0.8,
         height: 150,
         fit: BoxFit.cover,
@@ -72,6 +106,8 @@ class _ImageMessage extends StatelessWidget {
         },
       ),
     );
+
+    //#endregion
   }
 
   //#endregion

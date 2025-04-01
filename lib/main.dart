@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 
 //* Configs
 import 'package:messaging/configs/theme/app_theme.dart';
+import 'package:messaging/providers/chat_provider.dart';
+
+//* Providers
+import 'package:provider/provider.dart';
 
 //* Screens
 import 'package:messaging/screens/chat/chat_screen.dart';
@@ -19,12 +23,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Messaging App',
-      debugShowCheckedModeBanner: false,
-      theme:
-          AppTheme(themeColor: 1, themeBrightness: Brightness.light).getTheme(),
-      home: const ChatScreen(),
+    return MultiProvider(
+      providers: [ChangeNotifierProvider(create: (_) => ChatProvider())],
+      child: MaterialApp(
+        title: 'Messaging App',
+        debugShowCheckedModeBanner: false,
+        theme:
+            AppTheme(
+              themeColor: 1,
+              themeBrightness: Brightness.light,
+            ).getTheme(),
+        home: const ChatScreen(),
+      ),
     );
   }
 
