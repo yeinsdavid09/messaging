@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:messaging/widgets/chat/her_bubble_message.dart';
+import 'package:provider/provider.dart';
+
+//* Entities
+import 'package:messaging/domain/entities/message.dart';
+
+//* Providers
+import 'package:messaging/providers/chat_provider.dart';
 
 //* Widgets
 import 'package:messaging/widgets/chat/my_bubble_message.dart';
+import 'package:messaging/widgets/chat/her_bubble_message.dart';
+import 'package:messaging/widgets/shared/message_field_box.dart';
 
 class ChatScreen extends StatelessWidget {
   //#region --------------------------------- Hooks ---------------------------------
@@ -46,24 +54,40 @@ class _ChatView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //#region ----------------------------------- Variables ---------------------------------
+
+    final chatProvider = context.watch<ChatProvider>();
+
+    //#endregion
+
+    //#region --------------------------------- Return ---------------------------------
+
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Column(
         children: [
           Expanded(
             child: ListView.builder(
-              itemCount: 20,
+              controller: chatProvider.chatScrollController,
+              itemCount: chatProvider.messageList.length,
               itemBuilder: (context, index) {
-                return (index % 2 == 0)
-                    ? const HerBubbleMessage()
-                    : const MyBubbleMessage();
+                final message = chatProvider.messageList[index];
+                return (message.owner == Owner.notMine)
+                    ? HerBubbleMessage(message: message)
+                    : MyBubbleMessage(message: message);
               },
             ),
           ),
-          const Text('Hola'),
+          MessageFieldBox(
+            onEmitValue: (value) {
+              chatProvider.sendMessage(Message(text: value, owner: Owner.mine));
+            },
+          ),
         ],
       ),
     );
+
+    //#endregion
   }
 
   //#endregion
